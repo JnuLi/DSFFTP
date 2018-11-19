@@ -8,24 +8,6 @@
 
 # -- Path setup --------------------------------------------------------------
 
-import sys
-import os
-from recommonmark.parser import CommonMarkParser
-from recommonmark.transform import AutoStructify
-
-
-# Use footnote size for code block.
-from sphinx.highlighting import PygmentsBridge
-from pygments.formatters.latex import LatexFormatter
-
-class CustomLatexFormatter(LatexFormatter):
-    def __init__(self, **options):
-        super(CustomLatexFormatter, self).__init__(**options)
-        self.verboptions = r"formatcom=\footnotesize"
-
-PygmentsBridge.latex_formatter = CustomLatexFormatter
-
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -34,150 +16,133 @@ PygmentsBridge.latex_formatter = CustomLatexFormatter
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+# Select nbsphinx and, if needed, add a math extension (mathjax or imgmath):
+extensions = [
+    'nbsphinx',
+    'sphinx.ext.mathjax',
+]
+
+# Exclude build directory and Jupyter backup files:
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
+
+# Default language for syntax highlighting in reST and Markdown cells
+highlight_language = 'none'
+
+# Don't add .txt suffix to source files (available for Sphinx >= 1.5):
+html_sourcelink_suffix = ''
+
+# Work-around until https://github.com/sphinx-doc/sphinx/issues/4229 is solved:
+html_scaled_image_link = False
+
+# Execute notebooks before conversion: 'always', 'never', 'auto' (default)
+#nbsphinx_execute = 'never'
+
+# Use this kernel instead of the one stored in the notebook metadata:
+#nbsphinx_kernel_name = 'python3'
+
+# List of arguments to be passed to the kernel that executes the notebooks:
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
+
+# If True, the build process is continued even if an exception occurs:
+#nbsphinx_allow_errors = True
+
+# Controls when a cell will time out (defaults to 30; use -1 for no timeout):
+#nbsphinx_timeout = 60
+
+# Default Pygments lexer for syntax highlighting in code cells:
+#nbsphinx_codecell_lexer = 'ipython3'
+
+# Width of input/output prompts used in CSS:
+#nbsphinx_prompt_width = '8ex'
+
+# If window is narrower than this, input/output prompts are on separate lines:
+#nbsphinx_responsive_width = '700px'
+
+# This is processed by Jinja2 and inserted before each notebook
+nbsphinx_prolog = r"""
+{% set docname = env.doc2path(env.docname, base='doc') %}
+.. only:: html
+    .. role:: raw-html(raw)
+        :format: html
+    .. nbinfo::
+        This page was generated from `{{ docname }}`__.
+        Interactive online version:
+        :raw-html:`<a href="https://mybinder.org/v2/gh/spatialaudio/nbsphinx/{{ env.config.release }}?filepath={{ docname }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>`
+    __ https://github.com/spatialaudio/nbsphinx/blob/
+        {{ env.config.release }}/{{ docname }}
+.. raw:: latex
+    \nbsphinxstartnotebook{\scriptsize\noindent\strut
+    \textcolor{gray}{The following section was generated from
+    \sphinxcode{\sphinxupquote{\strut {{ docname | escape_latex }}}} \dotfill}}
+"""
+
+# This is processed by Jinja2 and inserted after each notebook
+nbsphinx_epilog = r"""
+.. raw:: latex
+    \nbsphinxstopnotebook{\scriptsize\noindent\strut
+    \textcolor{gray}{\dotfill\ \sphinxcode{\sphinxupquote{\strut
+    {{ env.doc2path(env.docname, base='doc') | escape_latex }}}} ends here.}}
+"""
+
+# Input prompt for code cells. "%s" is replaced by the execution count.
+#nbsphinx_input_prompt = 'In [%s]:'
+
+# Output prompt for code cells. "%s" is replaced by the execution count.
+#nbsphinx_output_prompt = 'Out[%s]:'
+
+# Specify conversion functions for custom notebook formats:
+#import jupytext
+#nbsphinx_custom_formats = {
+#    '.Rmd': lambda s: jupytext.reads(s, '.Rmd'),
+#}
 
 # -- Project information -----------------------------------------------------
 
-project = u'数据科学：从基础到实战'
-copyright = u'2018--2019, Contributors'
-author = u'Li Jun'
+project = '数据科学：从基础到实战'
+copyright = '2018--2019, Contributors'
+author = 'Li Jun'
 
-# The short X.Y version.
-version = u'0.3.1'
-# The full version, including alpha/beta/rc tags.
-release = u'0.3.1'
+linkcheck_ignore = [r'http://localhost:\d+/']
 
+# -- Get version information and date from Git ----------------------------
 
-# -- General configuration ---------------------------------------------------
+try:
+    from subprocess import check_output
+    release = check_output(['git', 'describe', '--tags', '--always'])
+    release = release.decode().strip()
+    today = check_output(['git', 'show', '-s', '--format=%ad', '--date=short'])
+    today = today.decode().strip()
+except Exception:
+    release = '<unknown>'
+    today = '<unknown date>'
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
+# -- Options for HTML output ----------------------------------------------
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'nbsphinx',
-    'IPython.sphinxext.ipython_console_highlighting',
-]
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+html_title = project + ' version ' + release
 
-source_parsers = {'.md': CommonMarkParser}
-
-# The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
-source_suffix = ['.rst', '.ipynb', '.md']
-
-# The master toctree document.
-master_doc = 'index'
-
-# The language for content autogenerated by Sphinx. Refer to documentation
-# for a list of supported languages.
-#
-# This is also used if you do content translation via gettext catalogs.
-# Usually you set "language" from the command line for these cases.
-language = 'zh_CN'
-
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
-# exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
-
-# The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
-
-# A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
-
-# If true, keep warnings as "system message" paragraphs in the built documents.
-#keep_warnings = False
-
-# If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
-
-
-# -- Options for HTML output -------------------------------------------------
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-html_theme = 'sphinx_rtd_theme'
-
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
-# html_theme_options = {}
-
-# The name of an image file (relative to this directory) to use as a favicon of
-# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
-# pixels large.
-html_favicon = ''
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
-
-# Custom sidebar templates, must be a dictionary that maps document names
-# to template names.
-#
-# The default sidebars (for documents that don't match any pattern) are
-# defined by theme itself.  Builtin themes are using these templates by
-# default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
-# 'searchbox.html']``.
-#
-# html_sidebars = {}
-
-
-# -- Options for HTMLHelp output ---------------------------------------------
-
-# Output file base name for HTML help builder.
-htmlhelp_basename = ['_static']
-
-
-# -- Options for LaTeX output ------------------------------------------------
+# -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
+    'papersize': 'a4paper',
+    'printindex': '',
+    'preamble': r"""
+\usepackage[sc,osf]{mathpazo}
+\linespread{1.05}  % see http://www.tug.dk/FontCatalogue/urwpalladio/
+\renewcommand{\sfdefault}{pplj}  % Palatino instead of sans serif
+\IfFileExists{zlmtt.sty}{
+    \usepackage[light,scaled=1.05]{zlmtt}  % light typewriter font from lmodern
+}{
+    \renewcommand{\ttdefault}{lmtt}  % typewriter font from lmodern
+}
+""",
 }
 
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ds.tex', u'数据科学：从基础到实战',
-     u'Jun Li', 'manual'),
+    (master_doc, 'nbsphinx.tex', project, author, 'howto'),
 ]
 
-
-# -- Options for manual page output ------------------------------------------
-
-# One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'ds', 'ds Documentation',
-     [author], 1)
-]
-
-
-# -- Options for Texinfo output ----------------------------------------------
-
-# Grouping the document tree into Texinfo files. List of tuples
-# (source start file, target name, title, author,
-#  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'ds', 'ds Documentation',
-     author, 'ds', 'One line description of project.',
-     'Miscellaneous'),
-]
-
+latex_show_urls = 'footnote'
+latex_show_pagerefs = True
