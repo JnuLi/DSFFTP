@@ -37,14 +37,14 @@ PygmentsBridge.latex_formatter = CustomLatexFormatter
 
 # -- Project information -----------------------------------------------------
 
-project = '数据科学：从基础到实战'
-copyright = '2018--2018, Contributors'
-author = 'Li Jun'
+project = u'数据科学：从基础到实战'
+copyright = u'2018--2018, Contributors'
+author = u'Li Jun'
 
-# The short X.Y version
-version = ''
-# The full version, including alpha/beta/rc tags
-release = ''
+# The short X.Y version.
+version = u'0.3.1'
+# The full version, including alpha/beta/rc tags.
+release = u'0.3.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -103,7 +103,7 @@ pygments_style = 'sphinx'
 #keep_warnings = False
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+todo_include_todos = False
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -198,8 +198,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ds.tex', '数据科学：从基础到实战',
-     'ds', 'manual'),
+    (master_doc, 'ds.tex', u'数据科学：从基础到实战',
+     u'Jun Li', 'manual'),
 ]
 
 
@@ -224,30 +224,3 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-
-# -- Options for Epub output -------------------------------------------------
-
-# Bibliographic Dublin Core info.
-epub_title = project
-
-# The unique identifier of the text. This can be a ISBN number
-# or the project homepage.
-#
-# epub_identifier = ''
-
-# A unique identification for the text.
-#
-# epub_uid = ''
-
-# A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
-
-# app setup hook
-def setup(app):
-    app.add_config_value('recommonmark_config', {
-        #'url_resolver': lambda url: github_doc_root + url,
-        'auto_toc_tree_section': 'Contents',
-        'enable_eval_rst': True,
-        'enable_auto_doc_ref': True,
-    }, True)
-    app.add_transform(AutoStructify)
