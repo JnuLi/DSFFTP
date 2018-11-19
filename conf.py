@@ -149,49 +149,6 @@ htmlhelp_basename = ['_static']
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
-    # 'papersize' : 'a4paper',
-    'utf8extra' : '',
-    'inputenc'  : '',
-    'babel'     : r'''\usepackage[english]{babel}''',
-    'preamble' : r'''
-\usepackage{ctex}
-\setmainfont{Source Serif Pro}
-\setsansfont{Source Sans Pro}
-\setmonofont{Source Code Pro}
-\setCJKmainfont[BoldFont=Source Han Serif SC SemiBold]{Source Han Serif SC}
-\setCJKsansfont[BoldFont=Source Han Sans SC Medium]{Source Han Sans SC Normal}
-\setCJKmonofont{Source Han Sans SC Normal}
-
-
-\addto\captionsenglish{\renewcommand{\chaptername}{}}
-\addto\captionsenglish{\renewcommand{\contentsname}{目录}}
-
-\usepackage[draft]{minted}
-\fvset{breaklines=true, breakanywhere=true}
-\setlength{\headheight}{13.6pt}
-
-\makeatletter
-    \fancypagestyle{normal}{
-        \fancyhf{}
-        \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
-        \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
-        \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
-        \fancyhead[LE,RO]{{\py@HeaderFamily }}
-     }
-\makeatother
-''',
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
-
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
-'figure_align': 'H',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

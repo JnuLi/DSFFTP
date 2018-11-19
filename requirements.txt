@@ -9,6 +9,9 @@ matplotlib
 seaborn
 recommonmark
 sphinx
+sphinx_rtd_theme
+nbsphinx
+IPython
 #
 ###### Requirements with Version Specifiers ######
 scikit-learn == 0.20.0
