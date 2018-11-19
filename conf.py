@@ -101,6 +101,8 @@ nbsphinx_epilog = r"""
 
 # -- Project information -----------------------------------------------------
 
+master_doc = 'index'
+
 project = '数据科学：从基础到实战'
 copyright = '2018--2019, Contributors'
 author = 'Li Jun'
