@@ -38,7 +38,7 @@ PygmentsBridge.latex_formatter = CustomLatexFormatter
 # -- Project information -----------------------------------------------------
 
 project = u'数据科学：从基础到实战'
-copyright = u'2018--2018, Contributors'
+copyright = u'2018--2019, Contributors'
 author = u'Li Jun'
 
 # The short X.Y version.

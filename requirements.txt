@@ -1,0 +1,14 @@
+#
+####### example-requirements.txt #######
+#
+###### Requirements without Version Specifiers ######
+numpy
+scipy
+pandas
+matplotlib
+seaborn
+#
+###### Requirements with Version Specifiers ######
+scikit-learn == 0.20.0
+#
+####
