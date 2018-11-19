@@ -1,9 +1,5 @@
 # 线性回归(Linear Regression)
 
-
-
-```eval_rst
-
 .. toctree::
    :maxdepth: 2
 
