@@ -1,4 +1,6 @@
-# 感知器(Perceptron)
+感知器
+===================
+
 
 .. toctree::
    :maxdepth: 2

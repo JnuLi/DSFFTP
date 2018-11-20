@@ -1,4 +1,6 @@
-# 线性回归(Linear Regression)
+线性回归
+==========================
+
 
 .. toctree::
    :maxdepth: 2
