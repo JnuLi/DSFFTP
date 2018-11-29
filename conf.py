@@ -17,16 +17,30 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
 
 source_parsers = {
     '.md': CommonMarkParser,
 }
 
+# Use footnote size for code block.
+from sphinx.highlighting import PygmentsBridge
+from pygments.formatters.latex import LatexFormatter
+
+class CustomLatexFormatter(LatexFormatter):
+    def __init__(self, **options):
+        super(CustomLatexFormatter, self).__init__(**options)
+        self.verboptions = r"formatcom=\footnotesize"
+
+PygmentsBridge.latex_formatter = CustomLatexFormatter
+
 # Select nbsphinx and, if needed, add a math extension (mathjax or imgmath):
 extensions = [
-    'nbsphinx',
     'sphinx.ext.mathjax',
+    'nbsphinx',
     'IPython.sphinxext.ipython_console_highlighting',
+    'sphinx.ext.todo',
+    'sphinx.ext.githubpages',
 ]
 
 # Exclude build directory and Jupyter backup files:
@@ -95,7 +109,7 @@ author = 'Li Jun'
 
 linkcheck_ignore = [r'http://localhost:\d+/']
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'karma_sphinx_theme'
 
 # -- Get version information and date from Git ----------------------------
 
@@ -136,3 +150,10 @@ latex_documents = [
 
 latex_show_urls = 'footnote'
 latex_show_pagerefs = True
+
+def setup(app):
+    app.add_transform(AutoStructify)
+    app.add_config_value('recommonmark_config', {
+    }, True)
+    app.add_javascript('google_analytics.js')
+    app.add_javascript('discuss.js')

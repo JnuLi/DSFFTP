@@ -3,3 +3,4 @@ nbsphinx
 nbconvert!=5.4
 ipykernel
 recommonmark
+karma_sphinx_theme
