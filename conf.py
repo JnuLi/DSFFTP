@@ -16,6 +16,12 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+from recommonmark.parser import CommonMarkParser
+
+source_parsers = {
+    '.md': CommonMarkParser,
+}
+
 # Select nbsphinx and, if needed, add a math extension (mathjax or imgmath):
 extensions = [
     'nbsphinx',
