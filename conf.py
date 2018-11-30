@@ -20,20 +20,18 @@ import recommonmark
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 
-source_parsers = {
-    '.md': CommonMarkParser,
-}
+source_parsers = {'.md': CommonMarkParser}
 
 # Use footnote size for code block.
-from sphinx.highlighting import PygmentsBridge
-from pygments.formatters.latex import LatexFormatter
+#from sphinx.highlighting import PygmentsBridge
+#from pygments.formatters.latex import LatexFormatter
 
-class CustomLatexFormatter(LatexFormatter):
-    def __init__(self, **options):
-        super(CustomLatexFormatter, self).__init__(**options)
-        self.verboptions = r"formatcom=\footnotesize"
+#class CustomLatexFormatter(LatexFormatter):
+#    def __init__(self, **options):
+#        super(CustomLatexFormatter, self).__init__(**options)
+#        self.verboptions = r"formatcom=\footnotesize"
 
-PygmentsBridge.latex_formatter = CustomLatexFormatter
+#PygmentsBridge.latex_formatter = CustomLatexFormatter
 
 
 # Select nbsphinx and, if needed, add a math extension (mathjax or imgmath):
@@ -165,12 +163,6 @@ latex_show_pagerefs = True
 
 # app setup hook
 def setup(app):
-    app.add_config_value('recommonmark_config', {
-        #'url_resolver': lambda url: github_doc_root + url,
-        'auto_toc_tree_section': 'Contents',
-        'enable_eval_rst': True,
-        'enable_auto_doc_ref': True,
-        'enable_math': True,
-        'enable_inline_math': True,
-    }, True)
     app.add_transform(AutoStructify)
+    app.add_config_value('recommonmark_config', {
+    }, True)
