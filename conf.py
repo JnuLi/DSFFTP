@@ -12,10 +12,11 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('.'))
 
+import recommonmark
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 
@@ -34,13 +35,16 @@ class CustomLatexFormatter(LatexFormatter):
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
 
+
 # Select nbsphinx and, if needed, add a math extension (mathjax or imgmath):
 extensions = [
     'sphinx.ext.mathjax',
-    'nbsphinx',
-    'IPython.sphinxext.ipython_console_highlighting',
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'nbsphinx',
+    'IPython.sphinxext.ipython_console_highlighting',
 ]
 
 # Exclude build directory and Jupyter backup files:
@@ -111,6 +115,11 @@ linkcheck_ignore = [r'http://localhost:\d+/']
 
 html_theme = 'karma_sphinx_theme'
 
+# The short X.Y version.
+version = recommonmark.__version__
+# The full version, including alpha/beta/rc tagss
+release = recommonmark.__version__
+
 # -- Get version information and date from Git ----------------------------
 
 try:
@@ -126,6 +135,9 @@ except Exception:
 # -- Options for HTML output ----------------------------------------------
 
 html_title = project + ' version ' + release
+
+# Output file base name for HTML help builder.
+htmlhelp_basename = 'Recommonmarkdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -151,9 +163,14 @@ latex_documents = [
 latex_show_urls = 'footnote'
 latex_show_pagerefs = True
 
+# app setup hook
 def setup(app):
-    app.add_transform(AutoStructify)
     app.add_config_value('recommonmark_config', {
+        #'url_resolver': lambda url: github_doc_root + url,
+        'auto_toc_tree_section': 'Contents',
+        'enable_eval_rst': True,
+        'enable_auto_doc_ref': True,
+        'enable_math': True,
+        'enable_inline_math': True,
     }, True)
-    app.add_javascript('google_analytics.js')
-    app.add_javascript('discuss.js')
+    app.add_transform(AutoStructify)
