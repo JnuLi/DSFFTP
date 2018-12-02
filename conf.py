@@ -106,7 +106,7 @@ source_suffix = ['.rst', '.ipynb', '.md']
 master_doc = 'index'
 
 project = '数据科学：从基础到实战'
-copyright = '2018--2019, Contributors'
+copyright = '2018--2019, Jun Li'
 author = 'Li Jun'
 
 linkcheck_ignore = [r'http://localhost:\d+/']
